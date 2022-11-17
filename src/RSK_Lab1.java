@@ -39,7 +39,7 @@ public class RSK_Lab1 {
         groupArr = sortArray(groupArr);  // а тут мы их сортируем по количеству уникальных операций
         printArrayJagged(groupArr);
 
-        for(int i = 0; i<groupArr.length; i++){
+        for(int i = 0; i<groupArr.length; i++){  // вот тут начинается задание со слиянием строк
 
             String[] tempArray = groupArr[i];
             for(int k = i+1; k<groupArr[k-1].length; k++){
