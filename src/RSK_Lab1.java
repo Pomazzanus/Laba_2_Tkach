@@ -27,18 +27,21 @@ public class RSK_Lab1 {
             Collections.sort(groups.get(i));
             String[][] tempArr = new String[groups.get(i).size()][];
             for(int j = 0; j < groups.get(i).size();j++){
-                tempArr[j] = matrix[groups.get(i).get(j)-1];
-                //System.out.print(groups.get(i).get(j) + " ");
+                tempArr[j] = matrix[groups.get(i).get(j)-1];  //тут мы создаем временный массивчик куда пихаем строчки из нашей матрицы по номеру группы
             }
             System.out.print(groups.get(i));
-            String[] distArr = getDistinctElements(tempArr);
+            String[] distArr = getDistinctElements(tempArr);  //а тут находим уникальные операции для них
             groupArr[i] = distArr;
-            System.out.println(" - " + distArr.length + " ���������� ��������");
+            System.out.println(" - " + distArr.length + " різнотипних операцій");
             printArray(distArr);
             System.out.println();
         }
         groupArr = sortArray(groupArr);
         printArrayJagged(groupArr);
+        
+        for(int i = 0; i<groupArr.length; i++){
+            
+        }
     }
 
 
