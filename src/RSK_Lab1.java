@@ -39,9 +39,7 @@ public class RSK_Lab1 {
         groupArr = sortArray(groupArr);  // а тут мы их сортируем по количеству уникальных операций
         printArrayJagged(groupArr);
 
-        for(int i = 0; i<groupArr.length; i++){
-
-        }
+      
     }
 
 
