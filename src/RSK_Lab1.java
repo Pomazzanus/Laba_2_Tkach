@@ -56,9 +56,10 @@ public class RSK_Lab1 {
         }
 
         for(int i = 0; i<groupArr.length; i++){  // вот тут начинается задание со слиянием строк
-
+            System.out.println(i);
             String[] tempArray = groupArr[i];
             for(int k = i+1; k<groupArr[k-1].length; k++){
+
                 String[][] tempArray1 = new String[2][];
                 tempArray1[0] = tempArray;
                 tempArray1[1] = groupArr[k];
@@ -66,7 +67,12 @@ public class RSK_Lab1 {
                     String[][] tempGroup = groupArr;
                     for (int n = 0; n<groupArr.length; n++){
                         if(groupArr[k].equals(tempGroup[n])){
+                            ArrayList<Integer> addList = new ArrayList<Integer>();
+                            addList.addAll(groups.get(n));
+                            addList.addAll(groups.get(i));
+                            groups.set(i, addList);
                             elementInGroup.remove(n);
+                            Collections.sort(groups.get(i));
                             groups.remove(n);
                         }
                     }
