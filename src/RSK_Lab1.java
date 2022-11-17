@@ -39,7 +39,27 @@ public class RSK_Lab1 {
         groupArr = sortArray(groupArr);  // а тут мы их сортируем по количеству уникальных операций
         printArrayJagged(groupArr);
 
-      
+        for(int i = 0; i<groupArr.length; i++){
+
+            String[] tempArray = groupArr[i];
+            for(int k = i+1; k<groupArr[k-1].length; k++){
+                String[][] tempArray1 = new String[2][];
+                tempArray1[0] = tempArray;
+                tempArray1[1] = groupArr[k];
+                if(getDistinctElements(tempArray1).length == tempArray.length){
+                    String[][] tempGroup = groupArr;
+                    for (int n = 0; n<groupArr.length; n++){
+                        if(groupArr[k].equals(tempGroup[n])){
+                            groupArr[n] = new String[] {"xxxxxxxxxxxxxx"};
+                        }
+                        else groupArr[n] = tempGroup[n];
+                    }
+                }
+            }
+        }
+        System.out.println("\n");
+        printArrayJagged(groupArr);
+        
     }
 
 
