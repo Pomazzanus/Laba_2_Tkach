@@ -3,11 +3,12 @@ import java.util.*;
 public class RSK_Lab1 {
     public static void main(String [] args){
         Scanner in = new Scanner(System.in);
-
-        String[][] matrix = initializeArray();
+        String[][] matrix = Repository.initializeArray();
 
         String[] array = getDistinctElements(matrix);
-
+        System.out.println("____________\nLab_1\n");
+        printArrayJagged(Repository.initializeArray());
+        System.out.println();
         printArray(array);
         System.out.println();
         System.out.println(array.length);
@@ -19,6 +20,42 @@ public class RSK_Lab1 {
 
         ArrayList<ArrayList<Integer>> groups;
         groups = returnsGroups(adjacencyMatrix);
+
+        System.out.println("____________\nLab_2\n");
+        String[][] groupArr = new String[groups.size()][];
+        for(int i = 0; i < groups.size(); i++){
+            Collections.sort(groups.get(i));
+            String[][] tempArr = new String[groups.get(i).size()][];
+            for(int j = 0; j < groups.get(i).size();j++){
+                tempArr[j] = matrix[groups.get(i).get(j)-1];
+                //System.out.print(groups.get(i).get(j) + " ");
+            }
+            System.out.print(groups.get(i));
+            String[] distArr = getDistinctElements(tempArr);
+            groupArr[i] = distArr;
+            System.out.println(" - " + distArr.length + " різнотипних операцій");
+            printArray(distArr);
+            System.out.println();
+        }
+        groupArr = sortArray(groupArr);
+        printArrayJagged(groupArr);
+    }
+
+
+    static String[][] sortArray(String[][] array){
+        boolean needIteration = true;
+        while (needIteration) {
+            needIteration = false;
+            for (int i = 1; i < array.length; i++) {
+                if (array[i].length > array[i - 1].length) {
+                    String[] tmp = array[i];
+                    array[i] = array[i - 1];
+                    array[i - 1] = tmp;
+                    needIteration = true;
+                }
+            }
+        }
+        return array;
     }
 
     static void printArray(String[] array){
@@ -46,52 +83,7 @@ public class RSK_Lab1 {
         }
     }
 
-    static String[][] initializeArray(){
-        String[][] jaggedArray = new String[14][];
-        jaggedArray[0] = new String[] {"T3","T1","C1","T2","C2"};
-        jaggedArray[1] = new String[] {"T3","C2","T1","C1","T2","F1","T5"};
-        jaggedArray[2] = new String[] {"T4","T1","C1","T2","F1","T5"};
-        jaggedArray[3] = new String[] {"T4","T1","C1","T2","C2","T5"};
-        jaggedArray[4] = new String[] {"T1","C1","T2","T3","T4"};
-        jaggedArray[5] = new String[] {"T1","C1","T2","F1","F2"};
-        jaggedArray[6] = new String[] {"T1","C1","T2","C2","T5"};
-        jaggedArray[7] = new String[] {"T1","F2","P1","T2","T3","T4","T5"};
-        jaggedArray[8] = new String[] {"T1","P1","F2","F3"};
-        jaggedArray[9] = new String[] {"T1","P1","T2","T3","F2","T5"};
-        jaggedArray[10] = new String[] {"T3","T4","T2","F3","P1","F2"};
-        jaggedArray[11] = new String[] {"T3","T1","F2","P1","T4","T5"};
-        jaggedArray[12] = new String[] {"T3","C1","T1","F3","P1","F2","T5"};
-        jaggedArray[13] = new String[] {"T4","C1","T1","F2","P1"};
 
-        String[][] arr = new String[][]
-                {
-                        {"T1","F1","T4","C1","C2"},
-                        {"T4","C1","C2","F1","F2"},
-                        {"T1","T2","T4"},
-                        {"T1","T4","C1"},
-                        {"T4"}
-                };
-
-        String[][] arr1 = new String[][]
-                {
-                        {"T1","T2","T3","C1","C2"},
-                        {"T2","T3","C1"},
-                        {"T3","C2"},
-                        {"T1","T3"},
-                        {"T2","C1","C2"},
-                        {"T3"}
-                };
-        String[][] arr2 = new String[][]
-                {
-                        {"T1","F1","T4","C1","C2"},
-                        {"T4","C1","C2","F1","F2"},
-                        {"T1","T2","T4"},
-                        {"T1","T4","C1"},
-                        {"T4"}
-                };
-
-        return arr;
-    }
 
     static String[] getDistinctElements(String[][] jaggedArray){
         String[] distinctElements = new String[jaggedArray[0].length];
@@ -250,5 +242,6 @@ public class RSK_Lab1 {
         }
 
         return groups;
+
     }
 }
