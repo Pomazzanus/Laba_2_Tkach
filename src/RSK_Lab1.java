@@ -36,8 +36,24 @@ public class RSK_Lab1 {
             printArray(distArr);
             System.out.println();
         }
-        groupArr = sortArray(groupArr);  // а тут мы их сортируем по количеству уникальных операций
-        printArrayJagged(groupArr);
+        groupArr = sortArray(groupArr, groups);  // а тут мы их сортируем по количеству уникальных операций
+        for (int i = 0; i < groupArr.length; i++) { //вывод отсортированных груп и элементов
+            System.out.println();
+            System.out.println(groups.get(i));
+            for (int j = 0; j < groupArr[i].length; j++) {
+                System.out.print(groupArr[i][j] + " ");
+            }
+            System.out.println();
+        }
+        List<ArrayList<String>> elementInGroup = new ArrayList<ArrayList<String>>();
+
+        for(int i = 0; i < groupArr.length; i++){
+            ArrayList<String> iList = new ArrayList<String>();
+            for (int j = 0; j<groupArr[i].length; j++){
+                iList.add(groupArr[i][j]);
+            }
+            elementInGroup.add(iList);
+        }
 
         for(int i = 0; i<groupArr.length; i++){  // вот тут начинается задание со слиянием строк
 
@@ -50,20 +66,38 @@ public class RSK_Lab1 {
                     String[][] tempGroup = groupArr;
                     for (int n = 0; n<groupArr.length; n++){
                         if(groupArr[k].equals(tempGroup[n])){
-                            groupArr[n] = new String[] {"xxxxxxxxxxxxxx"};
+                            elementInGroup.remove(n);
+                            groups.remove(n);
                         }
-                        else groupArr[n] = tempGroup[n];
                     }
                 }
             }
         }
         System.out.println("\n");
-        printArrayJagged(groupArr);
+
+        printArrayListOfElements(elementInGroup, groups);
         
     }
 
-
-    static String[][] sortArray(String[][] array){
+    static void printArrayListOfElements (List<ArrayList<String>> elementInGroup) {
+        for (int i = 0; i < elementInGroup.size(); i++) {
+            for (int j = 0; j < elementInGroup.get(i).size(); j++) {
+                System.out.print(elementInGroup.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
+    }
+    static void printArrayListOfElements (List<ArrayList<String>> elementInGroup, ArrayList<ArrayList<Integer>> groups) {
+        for (int i = 0; i < elementInGroup.size(); i++) {
+            System.out.println();
+            System.out.println(groups.get(i));
+            for (int j = 0; j < elementInGroup.get(i).size(); j++) {
+                System.out.print(elementInGroup.get(i).get(j) + " ");
+            }
+            System.out.println();
+        }
+    }
+    static String[][] sortArray(String[][] array, ArrayList<ArrayList<Integer>> groups){
         boolean needIteration = true;
         while (needIteration) {
             needIteration = false;
@@ -72,6 +106,7 @@ public class RSK_Lab1 {
                     String[] tmp = array[i];
                     array[i] = array[i - 1];
                     array[i - 1] = tmp;
+                    Collections.swap(groups, i, i-1);
                     needIteration = true;
                 }
             }
@@ -103,8 +138,6 @@ public class RSK_Lab1 {
             System.out.println();
         }
     }
-
-
 
     static String[] getDistinctElements(String[][] jaggedArray){
         String[] distinctElements = new String[jaggedArray[0].length];
@@ -265,4 +298,6 @@ public class RSK_Lab1 {
         return groups;
 
     }
+
+
 }
