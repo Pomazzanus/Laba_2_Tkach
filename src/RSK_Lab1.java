@@ -45,17 +45,74 @@ public class RSK_Lab1 {
             }
             System.out.println();
         }
-        List<ArrayList<String>> elementInGroup = new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> elementsInGroup = new ArrayList<ArrayList<String>>();
 
         for(int i = 0; i < groupArr.length; i++){
             ArrayList<String> iList = new ArrayList<String>();
             for (int j = 0; j<groupArr[i].length; j++){
                 iList.add(groupArr[i][j]);
             }
-            elementInGroup.add(iList);
+            elementsInGroup.add(iList);
         }
 
-        for(int i = 0; i<groupArr.length; i++){  // вот тут начинается задание со слиянием строк
+        boolean isAbsorbGroups = true;
+        boolean isAbsorbElement = true;
+        ArrayList<ArrayList<String>> clarificationElementsInGroup = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> clarificationGroups = new ArrayList<>();
+
+        do {
+            for(int i = 1; i<groups.size() - 1; i++) {  //Етап 1
+                for(String element : elementsInGroup.get(i)) {
+                    isAbsorbGroups = true;
+
+                    if (!elementsInGroup.get(0).contains(element)) {
+                        isAbsorbGroups = false;
+                        break;
+                    }
+                }
+                if (isAbsorbGroups) {
+                    for (int j = 0; j < groups.get(i).size(); j++) {
+                        groups.get(0).add(groups.get(i).get(j));
+                    }
+                    groups.remove(i);
+                    elementsInGroup.remove(i);
+                }
+            }
+
+            for(int i = 1; i<groups.size() - 1; i++) {  //Етап 2
+                for (int j = 0; j < groups.get(i).size(); j++) {
+                    for (String element : Repository.initializeArray()[(groups.get(i).get(j))-1]) {
+                        isAbsorbElement = true;
+                        if (!elementsInGroup.get(0).contains(element)) {
+                            isAbsorbElement = false;
+                            break;
+                        }
+                    }
+                    if (isAbsorbElement) {
+                        groups.get(0).add(groups.get(i).get(j));
+                        groups.get(i).remove(groups.get(i).get(j));
+                        elementsInGroup.get(i).clear();
+                        for (int newGroup : groups.get(i)) {
+                            for (String element : Repository.initializeArray()[newGroup-1]) {
+                                if (!elementsInGroup.get(i).contains(element)) {
+                                    elementsInGroup.get(i).add(element);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            clarificationElementsInGroup.add(elementsInGroup.get(0));
+            elementsInGroup.remove(0);
+            clarificationGroups.add(groups.get(0));
+            groups.remove(0);
+
+            elementsInGroup = sortArrayList(elementsInGroup, groups);
+
+        }while(groups.size() > 0);
+
+
+        /*for(int i = 0; i<groupArr.length; i++){  // вот тут начинается задание со слиянием строк
             System.out.println(i);
             String[] tempArray = groupArr[i];
             for(int k = i+1; k<groupArr[k-1].length; k++){
@@ -71,18 +128,23 @@ public class RSK_Lab1 {
                             addList.addAll(groups.get(n));
                             addList.addAll(groups.get(i));
                             groups.set(i, addList);
-                            elementInGroup.remove(n);
+                            elementsInGroup.remove(n);
                             Collections.sort(groups.get(i));
                             groups.remove(n);
                         }
                     }
                 }
             }
-        }
+        }*/
+
         System.out.println("\n");
 
-        printArrayListOfElements(elementInGroup, groups);
-        
+        for (int i = 0; i < clarificationGroups.size(); i++) {
+            Collections.sort(clarificationGroups.get(i));
+        }
+
+        //printArrayListOfElements(elementsInGroup, groups);
+        printArrayListOfElements(clarificationElementsInGroup, clarificationGroups);
     }
 
     static void printArrayListOfElements (List<ArrayList<String>> elementInGroup) {
@@ -112,6 +174,25 @@ public class RSK_Lab1 {
                     String[] tmp = array[i];
                     array[i] = array[i - 1];
                     array[i - 1] = tmp;
+                    Collections.swap(groups, i, i-1);
+                    needIteration = true;
+                }
+            }
+        }
+        return array;
+    }
+
+    static ArrayList<ArrayList<String>> sortArrayList(ArrayList<ArrayList<String>> array, ArrayList<ArrayList<Integer>> groups){
+        boolean needIteration = true;
+        while (needIteration) {
+            needIteration = false;
+            for (int i = 1; i < array.size(); i++) {
+                if (array.get(i).size() > array.get(i - 1).size()) {
+                    ArrayList<String> tmp = array.get(i);
+                    //array[i] = array[i - 1];
+                    array.set(i, array.get(i - 1));
+                    //array[i - 1] = tmp;
+                    array.set(i - 1, tmp);
                     Collections.swap(groups, i, i-1);
                     needIteration = true;
                 }
